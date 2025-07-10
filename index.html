@@ -1,0 +1,140 @@
+<!DOCTYPE html><html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <title>FITTER FIRST YEAR IMPROTANT MCQ FOR CBT EXAM | NIMI BASED</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: url('iti_logo.png') no-repeat center top/100px, #f9f9f9;
+      padding: 20px;
+      background-position: center 10px;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    .quiz-container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff url('background_giti_bansi.png') no-repeat center;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .question {
+      margin-bottom: 20px;
+      padding: 10px;
+      border-radius: 10px;
+      background: #ecf0f1;
+    }
+    .question.correct {
+      background-color: #d4edda;
+      border-left: 5px solid green;
+    }
+    .question.wrong {
+      background-color: #f8d7da;
+      border-left: 5px solid red;
+    }
+    .category-select {
+      margin-bottom: 20px;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 14px;
+      color: #555;
+    }
+    .footer span {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <h1>FITTER FIRST YEAR IMPROTANT MCQ FOR CBT EXAM | NIMI BASED</h1>
+  <div class="quiz-container">
+    <div class="category-select">
+      <label>श्रेणी चुनें:</label>
+      <select id="category" onchange="loadQuestions()">
+        <option value="employability">Employability Skills</option>
+        <option value="drawing">Engineering Drawing</option>
+        <option value="fitter">Fitter Theory</option>
+        <option value="science">Workshop Calculation & Science</option>
+      </select>
+    </div><form id="quizForm"></form>
+<button onclick="submitQuiz()">Submit</button>
+<div id="result" class="result"></div>
+
+<div class="footer">
+  <span>created by "RoHiiT_Dw'N"</span>
+  <span style="float:right">Instructor By [_ Shiv_Sir ]</span>
+</div>
+
+  </div><audio id="correctSound" src="correct.mp3"></audio> <audio id="wrongSound" src="wrong.mp3"></audio>
+
+  <script>
+    const questions = {
+      employability: [
+        { q: "Communication का मतलब क्या होता है?", o: ["बातचीत", "काम करना", "घूमना", "खेलना"], a: 0 },
+        { q: "Resume किसके लिए होता है?", o: ["Interview", "खाना", "Game", "News"], a: 0 }
+        // Add 148 more
+      ],
+      drawing: [
+        { q: "Engineering Drawing में सबसे पहले क्या बनाया जाता है?", o: ["Title Block", "Dimension", "Scale", "Section"], a: 0 }
+        // Add 149 more
+      ],
+      fitter: [
+        { q: "File का प्रयोग क्यों करते हैं?", o: ["साफ करने", "नापने", "मापने", "चिकनाई के लिए"], a: 0 }
+        // Add 149 more
+      ],
+      science: [
+        { q: "Power का SI unit क्या है?", o: ["Watt", "Volt", "Ohm", "Ampere"], a: 0 }
+        // Add 149 more
+      ]
+    };
+
+    function loadQuestions() {
+      const cat = document.getElementById('category').value;
+      const form = document.getElementById('quizForm');
+      form.innerHTML = '';
+      questions[cat].forEach((item, i) => {
+        const div = document.createElement('div');
+        div.className = 'question';
+        div.innerHTML = `<strong>Q${i+1}:</strong> ${item.q}<br>` +
+          item.o.map((opt, j) => `<label><input type="radio" name="q${i}" value="${j}"> ${opt}</label><br>`).join('');
+        form.appendChild(div);
+      });
+    }
+
+    function submitQuiz() {
+      const cat = document.getElementById('category').value;
+      let score = 0;
+      questions[cat].forEach((item, i) => {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        const div = document.getElementsByClassName('question')[i];
+        if (selected) {
+          if (parseInt(selected.value) === item.a) {
+            score++;
+            div.classList.add('correct');
+            document.getElementById('correctSound').play();
+          } else {
+            div.classList.add('wrong');
+            document.getElementById('wrongSound').play();
+            window.navigator.vibrate(200);
+          }
+        }
+      });
+      const percent = (score / questions[cat].length) * 100;
+      let msg = '';
+      if (percent <= 20) msg = 'बहुत बेकार 😓';
+      else if (percent <= 30) msg = 'बेकार 😐';
+      else if (percent <= 50) msg = 'थोड़ा सही है 🙂';
+      else if (percent <= 70) msg = 'अच्छा 👍';
+      else if (percent <= 90) msg = 'बहुत अच्छा 🤠';
+      else if (percent < 100) msg = 'EXCELLENT 👌';
+      else msg = 'शाबाश अब तो पूरा रिकॉर्ड टूट जाएगा 💪✅';
+      document.getElementById('result').innerText = `✅ स्कोर: ${score} / ${questions[cat].length} → ${msg}`;
+    }
+
+    window.onload = loadQuestions;
+  </script></body>
+</html>
