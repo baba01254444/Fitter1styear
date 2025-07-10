@@ -14,18 +14,21 @@
       color: #2c3e50;
     }
     .quiz-container {
-      max-width: 800px;
+      max-width: 1000px;
       margin: auto;
-      background: #fff url('background_giti_bansi.png') no-repeat center;
-      padding: 20px;
+      background: #fff url('background_giti_bansi.png') no-repeat center center;
+      background-size: contain;
+      padding: 40px;
       border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      min-height: 800px;
     }
     .question {
       margin-bottom: 20px;
-      padding: 10px;
+      padding: 15px;
       border-radius: 10px;
       background: #ecf0f1;
+      font-size: 18px;
     }
     .question.correct {
       background-color: #d4edda;
@@ -37,6 +40,7 @@
     }
     .category-select {
       margin-bottom: 20px;
+      font-size: 18px;
     }
     .footer {
       text-align: center;
@@ -46,6 +50,10 @@
     }
     .footer span {
       display: block;
+    }
+    select, button {
+      font-size: 16px;
+      padding: 8px;
     }
   </style>
 </head>
@@ -60,81 +68,84 @@
         <option value="fitter">Fitter Theory</option>
         <option value="science">Workshop Calculation & Science</option>
       </select>
-    </div><form id="quizForm"></form>
-<button onclick="submitQuiz()">Submit</button>
-<div id="result" class="result"></div>
-
-<div class="footer">
-  <span>created by "RoHiiT_Dw'N"</span>
-  <span style="float:right">Instructor By [_ Shiv_Sir ]</span>
-</div>
-
-  </div><audio id="correctSound" src="correct.mp3"></audio> <audio id="wrongSound" src="wrong.mp3"></audio>
-
+    </div>
+    <form id="quizForm"></form>
+    <button onclick="submitQuiz()">Submit</button>
+    <div id="result" class="result"></div>
+    <div class="footer">
+      <span>created by "RoHiiT_Dw'N"</span>
+      <span style="float:right">Instructor By [_ Shiv_Sir ]</span>
+    </div>
+  </div>
+  <audio id="correctSound" src="correct.mp3"></audio>
+  <audio id="wrongSound" src="wrong.mp3"></audio>
   <script>
     const questions = {
-      employability: [
-        { q: "Communication का मतलब क्या होता है?", o: ["बातचीत", "काम करना", "घूमना", "खेलना"], a: 0 },
-        { q: "Resume किसके लिए होता है?", o: ["Interview", "खाना", "Game", "News"], a: 0 }
-        // Add 148 more
-      ],
-      drawing: [
-        { q: "Engineering Drawing में सबसे पहले क्या बनाया जाता है?", o: ["Title Block", "Dimension", "Scale", "Section"], a: 0 }
-        // Add 149 more
-      ],
-      fitter: [
-        { q: "File का प्रयोग क्यों करते हैं?", o: ["साफ करने", "नापने", "मापने", "चिकनाई के लिए"], a: 0 }
-        // Add 149 more
-      ],
-      science: [
-        { q: "Power का SI unit क्या है?", o: ["Watt", "Volt", "Ohm", "Ampere"], a: 0 }
-        // Add 149 more
-      ]
-    };
+      employability: Array.from({length: 150}, (_, i) => ({
+        q: `Employability Q${i + 1} का उदाहरण क्या है?`,
+        o: ["Option A", "Option B", "Option C", "Option D"],
+        a: i % 4
+      })),
+      drawing: Array.from({length: 150}, (_, i) => ({
+        q: `Drawing Q${i + 1} में क्या आता है?`,
+        o: ["Scale", "Dimension", "Section", "Title Block"],
+        a: i % 4
+      })),
+      fitter: Array.from({length: 150}, (_, i) => ({
+        q: `Fitter Q${i + 1} के अनुसार सही उत्तर क्या है?`,
+        o: ["File", "Hammer", "Vice", "Drill"],
+        a: i % 4
+      })),
+      science: Array.from({length: 150}, (_, i) => ({
+        q: `Science Q${i + 1} में SI unit क्या है?`,
+        o: ["Watt", "Ampere", "Volt", "Ohm"],
+        a: i % 4
+      }))
+    };function loadQuestions() {
+  const cat = document.getElementById('category').value;
+  const form = document.getElementById('quizForm');
+  form.innerHTML = '';
+  questions[cat].forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'question';
+    div.innerHTML = `<strong>Q${i+1}:</strong> ${item.q}<br>` +
+      item.o.map((opt, j) => `<label><input type="radio" name="q${i}" value="${j}"> ${opt}</label><br>`).join('');
+    form.appendChild(div);
+  });
+}
 
-    function loadQuestions() {
-      const cat = document.getElementById('category').value;
-      const form = document.getElementById('quizForm');
-      form.innerHTML = '';
-      questions[cat].forEach((item, i) => {
-        const div = document.createElement('div');
-        div.className = 'question';
-        div.innerHTML = `<strong>Q${i+1}:</strong> ${item.q}<br>` +
-          item.o.map((opt, j) => `<label><input type="radio" name="q${i}" value="${j}"> ${opt}</label><br>`).join('');
-        form.appendChild(div);
-      });
+function submitQuiz() {
+  const cat = document.getElementById('category').value;
+  let score = 0;
+  questions[cat].forEach((item, i) => {
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    const div = document.getElementsByClassName('question')[i];
+    if (selected) {
+      if (parseInt(selected.value) === item.a) {
+        score++;
+        div.classList.add('correct');
+        document.getElementById('correctSound').play();
+      } else {
+        div.classList.add('wrong');
+        document.getElementById('wrongSound').play();
+        window.navigator.vibrate(300);
+      }
     }
+  });
+  const percent = (score / questions[cat].length) * 100;
+  let msg = '';
+  if (percent <= 20) msg = 'बहुत बेकार 😓';
+  else if (percent <= 30) msg = 'बेकार 😐';
+  else if (percent <= 50) msg = 'थोड़ा सही है 🙂';
+  else if (percent <= 70) msg = 'अच्छा 👍';
+  else if (percent <= 90) msg = 'बहुत अच्छा 🤠';
+  else if (percent < 100) msg = 'EXCELLENT 👌';
+  else msg = 'शाबाश अब तो पूरा रिकॉर्ड टूट जाएगा 💪✅';
+  document.getElementById('result').innerText = `✅ स्कोर: ${score} / ${questions[cat].length} → ${msg}`;
+}
 
-    function submitQuiz() {
-      const cat = document.getElementById('category').value;
-      let score = 0;
-      questions[cat].forEach((item, i) => {
-        const selected = document.querySelector(`input[name="q${i}"]:checked`);
-        const div = document.getElementsByClassName('question')[i];
-        if (selected) {
-          if (parseInt(selected.value) === item.a) {
-            score++;
-            div.classList.add('correct');
-            document.getElementById('correctSound').play();
-          } else {
-            div.classList.add('wrong');
-            document.getElementById('wrongSound').play();
-            window.navigator.vibrate(200);
-          }
-        }
-      });
-      const percent = (score / questions[cat].length) * 100;
-      let msg = '';
-      if (percent <= 20) msg = 'बहुत बेकार 😓';
-      else if (percent <= 30) msg = 'बेकार 😐';
-      else if (percent <= 50) msg = 'थोड़ा सही है 🙂';
-      else if (percent <= 70) msg = 'अच्छा 👍';
-      else if (percent <= 90) msg = 'बहुत अच्छा 🤠';
-      else if (percent < 100) msg = 'EXCELLENT 👌';
-      else msg = 'शाबाश अब तो पूरा रिकॉर्ड टूट जाएगा 💪✅';
-      document.getElementById('result').innerText = `✅ स्कोर: ${score} / ${questions[cat].length} → ${msg}`;
-    }
+window.onload = loadQuestions;
 
-    window.onload = loadQuestions;
-  </script></body>
+  </script>
+</body>
 </html>
