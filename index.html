@@ -1,34 +1,33 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>FITTER FIRST YEAR IMPORTANT MCQ FOR CBT EXAM | NIMI BASED</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f0f0f0 url('background_giti_bansi.png') center/cover no-repeat;
+      background: #f9f9f9 url('iti_logo.png') no-repeat center top;
       padding: 20px;
     }
     h1 {
       text-align: center;
       color: #2c3e50;
-      font-size: 22px;
-      margin-bottom: 30px;
     }
     .quiz-container {
       max-width: 900px;
       margin: auto;
-      background: white;
+      background: #fff url('background_giti_bansi.png') no-repeat center;
+      background-size: contain;
       padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
     .question {
       margin-bottom: 20px;
-      padding: 15px;
+      padding: 10px;
       border-radius: 10px;
-      background: #f9f9f9;
-      color: red;
+      background: #ecf0f1;
+      transition: 0.3s;
     }
     .question.correct {
       background-color: #d4edda;
@@ -38,17 +37,11 @@
       background-color: #f8d7da;
       border-left: 5px solid red;
     }
-    label {
-      color: black;
-    }
-    .category-select {
-      margin-bottom: 20px;
-    }
     .footer {
       text-align: center;
       margin-top: 30px;
-      font-size: 16px;
       font-weight: bold;
+      font-size: 16px;
       color: #333;
     }
     .footer span {
@@ -60,22 +53,18 @@
   <h1>FITTER FIRST YEAR IMPORTANT MCQ FOR CBT EXAM | NIMI BASED</h1>
 
   <div class="quiz-container">
-    <div class="category-select">
-      <label>Subject / विषय चुनें:</label>
-      <select id="category" onchange="loadQuestions()">
-        <option value="theory">Fitter Theory</option>
-        <option value="employability">Employability Skills</option>
-        <option value="drawing">Engineering Drawing</option>
-        <option value="science">Workshop Calculation & Science</option>
-      </select>
-    </div>
+    <label for="category">Subject / विषय चुनें:</label>
+    <select id="category" onchange="loadQuestions()">
+      <option>Fitter Theory</option>
+      <option>Employability Skills</option>
+      <option>Engineering Drawing</option>
+      <option>Workshop Calculation & Science</option>
+    </select>
 
     <form id="quizForm"></form>
-    <button onclick="submitQuiz()">Submit</button>
-    <div id="result"></div>
 
     <div class="footer">
-      <span>Created by "RoHiIT_Dw'N"</span>
+      <span>Created by "RoHiiT_Dw'N"</span>
       <span>Instructor By [_ Shiv_Sir ]</span>
     </div>
   </div>
@@ -83,7 +72,7 @@
   <audio id="correctSound" src="correct.mp3"></audio>
   <audio id="wrongSound" src="wrong.mp3"></audio>
 
-  <!-- JS FILES -->
+  <!-- JS Files -->
   <script src="js/theory.js"></script>
   <script src="js/employability.js"></script>
   <script src="js/drawing.js"></script>
@@ -91,63 +80,44 @@
 
   <script>
     const subjects = {
-      theory: theoryQuestions,
-      employability: employabilityQuestions,
-      drawing: drawingQuestions,
-      science: scienceQuestions
+      "Fitter Theory": theoryQuestions,
+      "Employability Skills": employabilityQuestions,
+      "Engineering Drawing": drawingQuestions,
+      "Workshop Calculation & Science": scienceQuestions
     };
 
     function loadQuestions() {
-      const cat = document.getElementById('category').value;
-      const form = document.getElementById('quizForm');
+      const category = document.getElementById("category").value;
+      const questions = subjects[category];
+      const form = document.getElementById("quizForm");
       form.innerHTML = '';
 
-      subjects[cat].forEach((item, i) => {
+      questions.forEach((item, i) => {
         const div = document.createElement('div');
         div.className = 'question';
-        div.innerHTML = `<strong>Q${i+1}:</strong> ${item.q}<br>` +
+        div.innerHTML = `<strong style="color:red">Q${i+1}:</strong> ${item.q}<br>` +
           item.o.map((opt, j) =>
-            `<label><input type="radio" name="q${i}" value="${j}" onchange="checkAnswer(${i}, ${j}, '${cat}', this)"> ${opt}</label><br>`
+            `<label style="color:black">
+              <input type="radio" name="q${i}" value="${j}" onclick="checkAnswer(${i}, ${j}, ${item.a}, this)">
+              ${opt}
+            </label><br>`
           ).join('');
         form.appendChild(div);
       });
     }
 
-    function checkAnswer(i, selected, cat, inputEl) {
-      const correct = subjects[cat][i].a;
-      const div = document.getElementsByClassName('question')[i];
-      div.classList.remove("correct", "wrong");
-
-      if (selected == correct) {
+    function checkAnswer(qIndex, selected, correct, el) {
+      const div = document.getElementsByClassName('question')[qIndex];
+      if (selected === correct) {
+        div.classList.remove("wrong");
         div.classList.add("correct");
         document.getElementById("correctSound").play();
       } else {
+        div.classList.remove("correct");
         div.classList.add("wrong");
         document.getElementById("wrongSound").play();
-        window.navigator.vibrate(200);
+        navigator.vibrate(200);
       }
-    }
-
-    function submitQuiz() {
-      const cat = document.getElementById('category').value;
-      let score = 0;
-      subjects[cat].forEach((item, i) => {
-        const selected = document.querySelector(`input[name="q${i}"]:checked`);
-        if (selected && parseInt(selected.value) === item.a) {
-          score++;
-        }
-      });
-      const percent = (score / subjects[cat].length) * 100;
-      let msg = '';
-      if (percent <= 20) msg = 'बहुत बेकार 😓';
-      else if (percent <= 30) msg = 'बेकार 😐';
-      else if (percent <= 50) msg = 'थोड़ा सही है 🙂';
-      else if (percent <= 70) msg = 'अच्छा 👍';
-      else if (percent <= 90) msg = 'बहुत अच्छा 🤠';
-      else if (percent < 100) msg = 'EXCELLENT 👌';
-      else msg = 'शाबाश अब तो पूरा रिकॉर्ड टूट जाएगा 💪✅';
-
-      document.getElementById('result').innerText = `✅ स्कोर: ${score} / ${subjects[cat].length} → ${msg}`;
     }
 
     window.onload = loadQuestions;
