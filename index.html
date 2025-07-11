@@ -1,126 +1,36 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8" />
-  <title>FITTER FIRST YEAR IMPORTANT MCQ FOR CBT EXAM | NIMI BASED</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f9f9f9 url('iti_logo.png') no-repeat center top;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      color: #2c3e50;
-    }
-    .quiz-container {
-      max-width: 900px;
-      margin: auto;
-      background: #fff url('background_giti_bansi.png') no-repeat center;
-      background-size: contain;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    }
-    .question {
-      margin-bottom: 20px;
-      padding: 10px;
-      border-radius: 10px;
-      background: #ecf0f1;
-      transition: 0.3s;
-    }
-    .question.correct {
-      background-color: #d4edda;
-      border-left: 5px solid green;
-    }
-    .question.wrong {
-      background-color: #f8d7da;
-      border-left: 5px solid red;
-    }
-    .footer {
-      text-align: center;
-      margin-top: 30px;
-      font-weight: bold;
-      font-size: 16px;
-      color: #333;
-    }
-    .footer span {
-      display: block;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <title>FITTER FIRST YEAR MCQ | NIMI BASED</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>FITTER FIRST YEAR IMPORTANT MCQ FOR CBT EXAM | NIMI BASED</h1>
+  <div id="app">
+    <h2>FITTER FIRST YEAR IMPORTANT MCQ FOR CBT EXAM | NIMI BASED</h2>
 
-  <div class="quiz-container">
-    <label for="category">Subject / विषय चुनें:</label>
-    <select id="category" onchange="loadQuestions()">
-      <option>Fitter Theory</option>
-      <option>Employability Skills</option>
-      <option>Engineering Drawing</option>
-      <option>Workshop Calculation & Science</option>
-    </select>
-
-    <form id="quizForm"></form>
-
-    <div class="footer">
-      <span>Created by "RoHiiT_Dw'N"</span>
-      <span>Instructor By [_ Shiv_Sir ]</span>
+    <div class="select-box">
+      <label for="subject">Subject / विषय चुनें:</label>
+      <select id="subject">
+        <option value="theory">Fitter Theory</option>
+        <option value="employability">Employability Skills</option>
+        <option value="drawing">Engineering Drawing</option>
+        <option value="science">Workshop Calculation & Science</option>
+      </select>
+      <button onclick="loadSubject()">Submit</button>
     </div>
+
+    <div id="quiz"></div>
+
+    <footer>
+      <strong>Created by "RoHiIT_DwN"<br>Instructor by [_ Shiv_Sir _]</strong>
+    </footer>
   </div>
 
-  <audio id="correctSound" src="correct.mp3"></audio>
-  <audio id="wrongSound" src="wrong.mp3"></audio>
-
-  <!-- JS Files -->
   <script src="js/theory.js"></script>
   <script src="js/employability.js"></script>
   <script src="js/drawing.js"></script>
   <script src="js/science.js"></script>
-
-  <script>
-    const subjects = {
-      "Fitter Theory": theoryQuestions,
-      "Employability Skills": employabilityQuestions,
-      "Engineering Drawing": drawingQuestions,
-      "Workshop Calculation & Science": scienceQuestions
-    };
-
-    function loadQuestions() {
-      const category = document.getElementById("category").value;
-      const questions = subjects[category];
-      const form = document.getElementById("quizForm");
-      form.innerHTML = '';
-
-      questions.forEach((item, i) => {
-        const div = document.createElement('div');
-        div.className = 'question';
-        div.innerHTML = `<strong style="color:red">Q${i+1}:</strong> ${item.q}<br>` +
-          item.o.map((opt, j) =>
-            `<label style="color:black">
-              <input type="radio" name="q${i}" value="${j}" onclick="checkAnswer(${i}, ${j}, ${item.a}, this)">
-              ${opt}
-            </label><br>`
-          ).join('');
-        form.appendChild(div);
-      });
-    }
-
-    function checkAnswer(qIndex, selected, correct, el) {
-      const div = document.getElementsByClassName('question')[qIndex];
-      if (selected === correct) {
-        div.classList.remove("wrong");
-        div.classList.add("correct");
-        document.getElementById("correctSound").play();
-      } else {
-        div.classList.remove("correct");
-        div.classList.add("wrong");
-        document.getElementById("wrongSound").play();
-        navigator.vibrate(200);
-      }
-    }
-
-    window.onload = loadQuestions;
-  </script>
+  <script src="main.js"></script>
 </body>
 </html>
