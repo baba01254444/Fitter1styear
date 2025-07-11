@@ -1,16 +1,15 @@
-
 const questions = [
   {
-    question: "рд╕рдВрдЪрд╛рд░ рдХреНрдпрд╛ рд╣реИ? (What is communication?)",
+    question: "संचार क्या है? (What is communication?)",
     options: [
-      { text: "рд╡рд┐рдЪрд╛рд░реЛрдВ рдХрд╛ рдЖрджрд╛рди-рдкреНрд░рджрд╛рди (Exchange of ideas)", correct: true },
-      { text: "рдЙрддреНрдкрд╛рджрди (Production)", correct: false },
-      { text: "рддреБрд▓рдирд╛ (Comparison)", correct: false },
-      { text: "рдЖрд▓реЛрдЪрдирд╛ (Criticism)", correct: false }
+      { text: "विचारों का आदान-प्रदान (Exchange of ideas)", correct: true },
+      { text: "उत्पादन (Production)", correct: false },
+      { text: "तुलना (Comparison)", correct: false },
+      { text: "आलोचना (Criticism)", correct: false }
     ]
   },
   {
-    question: "рд╡реГрддреНрдд рдХреЗ рдХрд┐рддрдиреЗ рдХреЗрдВрджреНрд░ рд╣реЛрддреЗ рд╣реИрдВ? (How many centers does a circle have?)",
+    question: "वृत्त के कितने केंद्र होते हैं? (How many centers does a circle have?)",
     options: [
       { text: "1", correct: true },
       { text: "2", correct: false },
@@ -55,8 +54,9 @@ function selectOption(elem, isCorrect, index) {
   } else {
     elem.classList.add("wrong");
     options.forEach(opt => {
-      if (opt.innerText.includes("рд╡рд┐рдЪрд╛рд░реЛрдВ рдХрд╛ рдЖрджрд╛рди-рдкреНрд░рджрд╛рди") || opt.innerText === "1")
+      if (opt.textContent.includes("विचारों का आदान-प्रदान") || opt.textContent === "1") {
         opt.classList.add("correct");
+      }
     });
     if (navigator.vibrate) navigator.vibrate(150);
   }
@@ -79,14 +79,14 @@ function prevQuestion() {
 function submitQuiz() {
   let percent = Math.round((score / questions.length) * 100);
   let message = "";
-  if (percent <= 20) message = "рдмрд╣реБрдд рдмреЗрдХрд╛рд░";
-  else if (percent <= 30) message = "рдмреЗрдХрд╛рд░";
-  else if (percent <= 50) message = "рдереЛрдбрд╝рд╛ рд╕рд╣реА рд╣реИ";
-  else if (percent <= 70) message = "рдЕрдЪреНрдЫрд╛";
-  else if (percent <= 90) message = "рдмрд╣реБрдд рдЕрдЪреНрдЫрд╛ ЁЯда";
-  else if (percent < 100) message = "EXCELLENT ЁЯСМ";
-  else message = "рд╢рд╛рдмрд╛рд╢ рдЕрдм рддреЛ рдкреВрд░рд╛ рд░рд┐рдХреЙрд░реНрдб рдЯреВрдЯ рдЬрд╛рдПрдЧрд╛ ЁЯТктЬЕ";
-  document.getElementById("feedback").innerText = `рдЖрдкрдХрд╛ рд╕реНрдХреЛрд░: ${percent}% - ${message}`;
+  if (percent <= 20) message = "बहुत बेकार";
+  else if (percent <= 30) message = "बेकार";
+  else if (percent <= 50) message = "थोड़ा सही है";
+  else if (percent <= 70) message = "अच्छा";
+  else if (percent <= 90) message = "बहुत अच्छा 🤠";
+  else if (percent < 100) message = "EXCELLENT 👌";
+  else message = "शाबाश अब तो पूरा रिकॉर्ड टूट जाएगा 💪✅";
+  document.getElementById("feedback").innerText = `आपका स्कोर: ${percent}% - ${message}`;
 }
 
 window.onload = () => loadQuestion(currentIndex);
