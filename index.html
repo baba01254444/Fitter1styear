@@ -1,30 +1,182 @@
-
-<!DOCTYPE html>
-<html lang="hi">
+<!DOCTYPE html><html lang="hi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FITTER FIRST YEAR MCQ</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta charset="UTF-8">
+  <title>Fitter First Year - MCQ App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 10px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    .question {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+    .option {
+      background: #eee;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .option:hover {
+      background: #ddd;
+    }
+    .correct {
+      background: #c8e6c9 !important;
+    }
+    .wrong {
+      background: #ffcdd2 !important;
+    }
+    .controls {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #feedback {
+      margin-top: 20px;
+      font-weight: bold;
+      color: green;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-  <h1>FITTER FIRST YEAR IMPORTANT MCQ FOR CBT EXAM | NIMI BASED ]]</h1>
-
-  <div id="quiz-container">
-    <div id="question-box"></div>
-    <div id="options-box"></div>
-    <button id="next-btn" onclick="nextQuestion()">Next</button>
-    <button id="prev-btn" onclick="prevQuestion()">Previous</button>
-    <button id="submit-btn" onclick="submitQuiz()">Submit</button>
-    <div id="feedback"></div>
+<div class="container">
+  <h1>FITTER FIRST YEAR MCQ QUIZ</h1>
+  <select id="subject-select">
+    <option value="drawing">Engineering Drawing</option>
+    <option value="theory">Fitter Theory</option>
+    <option value="calculation">Workshop Calculation</option>
+    <option value="employability">Employability Skills</option>
+  </select>
+  <div id="question-box"></div>
+  <div id="options-box"></div>
+  <div class="controls">
+    <button onclick="prevQuestion()">⏮️ Previous</button>
+    <button onclick="nextQuestion()">Next ⏭️</button>
   </div>
+  <div style="text-align: center; margin-top: 20px;">
+    <button onclick="submitQuiz()">✅ Submit</button>
+  </div>
+  <div id="feedback"></div>
+</div><script>
+let drawingQuestions = [];
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = [];
 
-  <footer>
-    <p class="developer">DEVELOPER BY "RoHiiT_Dw'N"</p>
-    <p><strong>Instructor By [_ Shiv_Sir ]</strong></p>
-    <p><strong>GITI BANSI</strong></p>
-  </footer>
+async function loadQuestions() {
+  const res = await fetch("questions/drawing.js");
+  const text = await res.text();
+  const match = text.match(/(.*);/s);
+  drawingQuestions = eval("[" + match[1] + "]");
+  setSubject("drawing");
+}
 
-  <script src="script.js"></script>
-</body>
+function setSubject(subject) {
+  if (subject === "drawing") {
+    currentQuestions = drawingQuestions;
+  } else {
+    // Add other subject logic here
+    currentQuestions = [];
+  }
+  currentIndex = 0;
+  score = 0;
+  answered = Array(currentQuestions.length).fill(false);
+  loadQuestion(currentIndex);
+}
+
+document.getElementById("subject-select").addEventListener("change", e => setSubject(e.target.value));
+
+function loadQuestion(index) {
+  const q = currentQuestions[index];
+  const questionBox = document.getElementById("question-box");
+  const optionsBox = document.getElementById("options-box");
+  questionBox.innerHTML = q.q;
+  optionsBox.innerHTML = "";
+
+  q.o.forEach((opt, i) => {
+    const btn = document.createElement("div");
+    btn.innerHTML = opt;
+    btn.className = "option";
+    btn.onclick = () => selectOption(btn, i, q.a, index);
+    optionsBox.appendChild(btn);
+  });
+
+  document.getElementById("feedback").innerText = "";
+}
+
+function selectOption(elem, selectedIndex, correctIndex, index) {
+  if (answered[index]) return;
+  answered[index] = true;
+  const options = document.querySelectorAll(".option");
+  options.forEach(opt => opt.onclick = null);
+
+  if (selectedIndex === correctIndex) {
+    elem.classList.add("correct");
+    score++;
+  } else {
+    elem.classList.add("wrong");
+    options[correctIndex].classList.add("correct");
+    if (navigator.vibrate) navigator.vibrate(150);
+  }
+}
+
+function nextQuestion() {
+  if (currentIndex < currentQuestions.length - 1) {
+    currentIndex++;
+    loadQuestion(currentIndex);
+  }
+}
+
+function prevQuestion() {
+  if (currentIndex > 0) {
+    currentIndex--;
+    loadQuestion(currentIndex);
+  }
+}
+
+function submitQuiz() {
+  let percent = Math.round((score / currentQuestions.length) * 100);
+  let message = "आपका स्कोर: " + percent + "%";
+  if (percent <= 20) message += " - बहुत कमजोर";
+  else if (percent <= 50) message += " - अभ्यास करें";
+  else if (percent <= 70) message += " - अच्छा प्रयास";
+  else if (percent <= 90) message += " - शानदार!";
+  else message += " - Excellent!";
+
+  document.getElementById("feedback").innerText = message;
+}
+
+loadQuestions();
+</script></body>
 </html>
