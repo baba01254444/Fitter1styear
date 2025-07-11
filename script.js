@@ -1,92 +1,46 @@
-const questions = [
-  {
-    question: "संचार क्या है? (What is communication?)",
-    options: [
-      { text: "विचारों का आदान-प्रदान (Exchange of ideas)", correct: true },
-      { text: "उत्पादन (Production)", correct: false },
-      { text: "तुलना (Comparison)", correct: false },
-      { text: "आलोचना (Criticism)", correct: false }
-    ]
-  },
-  {
-    question: "वृत्त के कितने केंद्र होते हैं? (How many centers does a circle have?)",
-    options: [
-      { text: "1", correct: true },
-      { text: "2", correct: false },
-      { text: "4", correct: false },
-      { text: "0", correct: false }
-    ]
-  }
-];
+let questions = []; let currentPage = 0; const pageSize = 20;
 
-let currentIndex = 0;
-let score = 0;
-let answered = Array(questions.length).fill(false);
+const subjects = { employability: [ { q: "Communication ka matlab kya hota hai?", o: [ "बात करना / Talking", "खाना खाना / Eating", "सोना / Sleeping", "पढ़ाई करना / Studying" ], a: 0 }, { q: "Resume kya hota hai?", o: [ "पढ़ाई की किताब", "Job ke liye bio-data", "Newspaper", "Shopping list" ], a: 1 } // Add more employability questions here ], drawing: [ { q: "Scale ka upyog kis liye hota hai?", o: [ "Map banana", "Design nikalna", "Measurement ke liye", "Color karne ke liye" ], a: 2 } // Add more drawing questions here ], fittertheory: [ { q: "Hammer ka use kya hai?", o: [ "Cutting", "Joining", "Filing", "Hitting" ], a: 3 } // Add more fitter theory questions here ], workshopscience: [ { q: "Force ki unit kya hai?", o: [ "Meter", "Second", "Newton", "Gram" ], a: 2 } // Add more workshop questions here ] };
 
-function loadQuestion(index) {
-  const q = questions[index];
-  const questionBox = document.getElementById("question-box");
-  const optionsBox = document.getElementById("options-box");
-  questionBox.innerText = (index + 1) + ". " + q.question;
-  optionsBox.innerHTML = "";
+function loadSubject() { const subject = document.getElementById("subjectSelect").value; if (!subject) return; questions = subjects[subject]; currentPage = 0; showQuestions(); }
 
-  q.options.forEach((opt, i) => {
-    const btn = document.createElement("div");
-    btn.innerText = opt.text;
-    btn.className = "option";
-    btn.onclick = () => selectOption(btn, opt.correct, index);
-    optionsBox.appendChild(btn);
-  });
+function showQuestions() { const quizDiv = document.getElementById("quizContainer"); quizDiv.innerHTML = "";
 
-  document.getElementById("feedback").innerText = "";
+const start = currentPage * pageSize; const end = Math.min(start + pageSize, questions.length);
+
+for (let i = start; i < end; i++) { const q = questions[i]; const qDiv = document.createElement("div"); qDiv.className = "question-block";
+
+const qText = document.createElement("div");
+qText.className = "question";
+qText.innerHTML = `${i + 1}. ${q.q}`;
+qDiv.appendChild(qText);
+
+q.o.forEach((opt, index) => {
+  const optBtn = document.createElement("div");
+  optBtn.className = "option";
+  optBtn.innerText = opt;
+  optBtn.onclick = () => selectAnswer(optBtn, index, q.a);
+  qDiv.appendChild(optBtn);
+});
+
+quizDiv.appendChild(qDiv);
+
 }
 
-function selectOption(elem, isCorrect, index) {
-  if (answered[index]) return;
-  answered[index] = true;
+document.getElementById("score").innerText = ""; }
 
-  const options = document.querySelectorAll(".option");
-  options.forEach(opt => opt.onclick = null);
+function selectAnswer(el, selectedIndex, correctIndex) { const parent = el.parentNode; const options = parent.querySelectorAll(".option"); options.forEach((opt, i) => { opt.onclick = null; // disable further click if (i === correctIndex) opt.classList.add("correct"); if (i === selectedIndex && i !== correctIndex) opt.classList.add("incorrect"); }); }
 
-  if (isCorrect) {
-    elem.classList.add("correct");
-    score++;
-  } else {
-    elem.classList.add("wrong");
-    options.forEach(opt => {
-      if (opt.textContent.includes("विचारों का आदान-प्रदान") || opt.textContent === "1") {
-        opt.classList.add("correct");
-      }
-    });
-    if (navigator.vibrate) navigator.vibrate(150);
-  }
-}
+function submitQuiz() { let total = 0; let correct = 0; const blocks = document.querySelectorAll(".question-block");
 
-function nextQuestion() {
-  if (currentIndex < questions.length - 1) {
-    currentIndex++;
-    loadQuestion(currentIndex);
-  }
-}
+blocks.forEach((block, i) => { total++; const options = block.querySelectorAll(".option"); options.forEach(opt => { if (opt.classList.contains("correct") && opt.classList.contains("selected")) { correct++; } }); });
 
-function prevQuestion() {
-  if (currentIndex > 0) {
-    currentIndex--;
-    loadQuestion(currentIndex);
-  }
-}
+const percent = Math.round((correct / total) * 100); let msg = percent >= 80 ? "शानदार प्रदर्शन!" : percent >= 50 ? "अच्छा है, सुधार करें।" : "कृपया और मेहनत करें।";
 
-function submitQuiz() {
-  let percent = Math.round((score / questions.length) * 100);
-  let message = "";
-  if (percent <= 20) message = "बहुत बेकार";
-  else if (percent <= 30) message = "बेकार";
-  else if (percent <= 50) message = "थोड़ा सही है";
-  else if (percent <= 70) message = "अच्छा";
-  else if (percent <= 90) message = "बहुत अच्छा 🤠";
-  else if (percent < 100) message = "EXCELLENT 👌";
-  else message = "शाबाश अब तो पूरा रिकॉर्ड टूट जाएगा 💪✅";
-  document.getElementById("feedback").innerText = `आपका स्कोर: ${percent}% - ${message}`;
-}
+document.getElementById("score").innerText = आपका स्कोर: ${percent}% - ${msg}; }
 
-window.onload = () => loadQuestion(currentIndex);
+function nextPage() { if ((currentPage + 1) * pageSize < questions.length) { currentPage++; showQuestions(); } }
+
+function prevPage() { if (currentPage > 0) { currentPage--; showQuestions(); } }
+
+  
