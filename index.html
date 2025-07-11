@@ -5,80 +5,77 @@
   <title>FITTER FIRST YEAR IMPORTANT MCQ FOR CBT EXAM | NIMI BASED</title>
   <style>
     body {
-      font-family: 'Arial', sans-serif;
-      background: #f9f9f9 url('iti_logo.png') no-repeat top center;
+      font-family: Arial, sans-serif;
+      background: #f0f0f0 url('background_giti_bansi.png') center/cover no-repeat;
       padding: 20px;
     }
     h1 {
       text-align: center;
       color: #2c3e50;
+      font-size: 22px;
+      margin-bottom: 30px;
     }
     .quiz-container {
       max-width: 900px;
       margin: auto;
-      background: #fff url('background_giti_bansi.png') no-repeat center;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
     .question {
       margin-bottom: 20px;
       padding: 15px;
       border-radius: 10px;
-      background: #ecf0f1;
-      font-size: 18px;
+      background: #f9f9f9;
       color: red;
     }
-    .question label {
-      color: black;
-      display: block;
-      margin: 5px 0;
-    }
     .question.correct {
-      background-color: #d4edda !important;
+      background-color: #d4edda;
       border-left: 5px solid green;
     }
     .question.wrong {
-      background-color: #f8d7da !important;
+      background-color: #f8d7da;
       border-left: 5px solid red;
+    }
+    label {
+      color: black;
+    }
+    .category-select {
+      margin-bottom: 20px;
     }
     .footer {
       text-align: center;
       margin-top: 30px;
-      font-size: 18px;
-      color: #000;
+      font-size: 16px;
       font-weight: bold;
+      color: #333;
     }
-    select, button {
-      font-size: 18px;
-      padding: 8px 12px;
-      margin-bottom: 20px;
+    .footer span {
+      display: block;
     }
   </style>
-
-  <!-- JS Files for Each Subject -->
-  <script src="employability.js"></script>
-  <script src="drawing.js"></script>
-  <script src="fitter.js"></script>
-  <script src="science.js"></script>
 </head>
 <body>
   <h1>FITTER FIRST YEAR IMPORTANT MCQ FOR CBT EXAM | NIMI BASED</h1>
-  <div class="quiz-container">
-    <label>Subject / विषय चुनें:</label>
-    <select id="category" onchange="loadQuestions()">
-      <option value="employability">Employability Skills</option>
-      <option value="drawing">Engineering Drawing</option>
-      <option value="fitter">Fitter Theory</option>
-      <option value="science">Workshop Calculation & Science</option>
-    </select>
 
-    <div id="quizForm"></div>
+  <div class="quiz-container">
+    <div class="category-select">
+      <label>Subject / विषय चुनें:</label>
+      <select id="category" onchange="loadQuestions()">
+        <option value="theory">Fitter Theory</option>
+        <option value="employability">Employability Skills</option>
+        <option value="drawing">Engineering Drawing</option>
+        <option value="science">Workshop Calculation & Science</option>
+      </select>
+    </div>
+
+    <form id="quizForm"></form>
     <button onclick="submitQuiz()">Submit</button>
     <div id="result"></div>
 
     <div class="footer">
-      <span>Created by "RoHiiT_Dw'N"</span><br>
+      <span>Created by "RoHiIT_Dw'N"</span>
       <span>Instructor By [_ Shiv_Sir ]</span>
     </div>
   </div>
@@ -86,11 +83,17 @@
   <audio id="correctSound" src="correct.mp3"></audio>
   <audio id="wrongSound" src="wrong.mp3"></audio>
 
+  <!-- JS FILES -->
+  <script src="js/theory.js"></script>
+  <script src="js/employability.js"></script>
+  <script src="js/drawing.js"></script>
+  <script src="js/science.js"></script>
+
   <script>
     const subjects = {
+      theory: theoryQuestions,
       employability: employabilityQuestions,
       drawing: drawingQuestions,
-      fitter: fitterQuestions,
       science: scienceQuestions
     };
 
@@ -98,32 +101,29 @@
       const cat = document.getElementById('category').value;
       const form = document.getElementById('quizForm');
       form.innerHTML = '';
+
       subjects[cat].forEach((item, i) => {
         const div = document.createElement('div');
         div.className = 'question';
         div.innerHTML = `<strong>Q${i+1}:</strong> ${item.q}<br>` +
-          item.o.map((opt, j) => `
-            <label>
-              <input type="radio" name="q${i}" value="${j}" onclick="checkAnswer(this, ${item.a}, ${i})"> ${opt}
-            </label>`).join('');
+          item.o.map((opt, j) =>
+            `<label><input type="radio" name="q${i}" value="${j}" onchange="checkAnswer(${i}, ${j}, '${cat}', this)"> ${opt}</label><br>`
+          ).join('');
         form.appendChild(div);
       });
     }
 
-    function checkAnswer(input, correctIndex, i) {
-      const parent = input.closest('.question');
-      const chosen = parseInt(input.value);
-      const allOptions = parent.querySelectorAll('input');
+    function checkAnswer(i, selected, cat, inputEl) {
+      const correct = subjects[cat][i].a;
+      const div = document.getElementsByClassName('question')[i];
+      div.classList.remove("correct", "wrong");
 
-      parent.classList.remove('correct', 'wrong');
-      allOptions.forEach(opt => opt.disabled = true);
-
-      if (chosen === correctIndex) {
-        parent.classList.add('correct');
-        document.getElementById('correctSound').play();
+      if (selected == correct) {
+        div.classList.add("correct");
+        document.getElementById("correctSound").play();
       } else {
-        parent.classList.add('wrong');
-        document.getElementById('wrongSound').play();
+        div.classList.add("wrong");
+        document.getElementById("wrongSound").play();
         window.navigator.vibrate(200);
       }
     }
@@ -146,6 +146,7 @@
       else if (percent <= 90) msg = 'बहुत अच्छा 🤠';
       else if (percent < 100) msg = 'EXCELLENT 👌';
       else msg = 'शाबाश अब तो पूरा रिकॉर्ड टूट जाएगा 💪✅';
+
       document.getElementById('result').innerText = `✅ स्कोर: ${score} / ${subjects[cat].length} → ${msg}`;
     }
 
