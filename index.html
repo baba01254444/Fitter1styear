@@ -8,35 +8,43 @@
       font-family: sans-serif;
       margin: 0;
       padding: 20px;
+      background-image: repeating-linear-gradient(45deg, transparent, transparent 100px, rgba(255, 255, 255, 0.05) 100px, rgba(255, 255, 255, 0.05) 200px),
+                        url("https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Emblem_of_India.svg/1200px-Emblem_of_India.svg.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 250px;
     }
     h1 {
       text-align: center;
       color: darkblue;
+      font-size: 28px;
     }
     #subject-select {
       margin: 20px auto;
       display: block;
-      font-size: 18px;
+      font-size: 20px;
       padding: 10px;
     }
     #quiz-box {
       background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 700px;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 800px;
       margin: auto;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      font-size: 20px;
     }
     .question {
-      font-size: 18px;
-      margin-bottom: 10px;
+      font-size: 22px;
+      margin-bottom: 15px;
     }
     .option {
-      padding: 10px;
-      margin: 5px 0;
+      padding: 12px;
+      margin: 8px 0;
       border-radius: 6px;
       background-color: #eee;
       cursor: pointer;
+      font-size: 20px;
     }
     .option.correct {
       background-color: lightgreen;
@@ -45,8 +53,8 @@
       background-color: #ff6666;
     }
     #result {
-      font-size: 20px;
-      margin-top: 20px;
+      font-size: 22px;
+      margin-top: 25px;
       text-align: center;
       font-weight: bold;
     }
@@ -54,6 +62,7 @@
       text-align: center;
       margin-top: 40px;
       font-weight: bold;
+      font-size: 18px;
     }
     .developer {
       color: red;
@@ -72,7 +81,7 @@
   <button onclick="nextQuestion()">➡️ अगला प्रश्न / Next</button>
   <div id="result"></div>
 </div><footer>
-  <div>GITI BANSI</div>
+  <div style="font-size:22px">GITI BANSI</div>
   <div class="developer">DEVELOPER BY "RoHiiT_Dw'N"</div>
   <div><b>Instructor By [_ Shiv_Sir ]</b></div>
 </footer><audio id="correct-sound" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
@@ -140,7 +149,7 @@ function handleAnswer(elem, correct) {
     document.getElementById('correct-sound').play();
   } else {
     elem.classList.add('wrong');
-    options[questions[document.getElementById('subject-select').value][currentIndex].a].classList.add('correct');
+    options[currentSet[currentIndex].a].classList.add('correct');
     if (navigator.vibrate) navigator.vibrate(200);
   }
 }
