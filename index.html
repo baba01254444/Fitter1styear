@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="hi">
+<!DOCTYPE html>
+<html lang="hi">
 <head>
   <meta charset="UTF-8">
   <title>FITTER FIRST YEAR IMPORTANT MCQ FOR CBT EXAM | NIMI BASED | 2025</title>
@@ -8,43 +9,35 @@
       font-family: sans-serif;
       margin: 0;
       padding: 20px;
-      background-image: repeating-linear-gradient(45deg, transparent, transparent 100px, rgba(255, 255, 255, 0.05) 100px, rgba(255, 255, 255, 0.05) 200px),
-                        url("https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Emblem_of_India.svg/1200px-Emblem_of_India.svg.png");
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: 250px;
     }
     h1 {
       text-align: center;
       color: darkblue;
-      font-size: 28px;
     }
     #subject-select {
       margin: 20px auto;
       display: block;
-      font-size: 20px;
+      font-size: 18px;
       padding: 10px;
     }
     #quiz-box {
       background: #fff;
-      padding: 30px;
-      border-radius: 12px;
-      max-width: 800px;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 700px;
       margin: auto;
-      box-shadow: 0 0 15px rgba(0,0,0,0.4);
-      font-size: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
     .question {
-      font-size: 22px;
+      font-size: 24px;
       margin-bottom: 15px;
     }
     .option {
-      padding: 12px;
-      margin: 8px 0;
+      padding: 10px;
+      margin: 5px 0;
       border-radius: 6px;
       background-color: #eee;
       cursor: pointer;
-      font-size: 20px;
     }
     .option.correct {
       background-color: lightgreen;
@@ -53,8 +46,8 @@
       background-color: #ff6666;
     }
     #result {
-      font-size: 22px;
-      margin-top: 25px;
+      font-size: 20px;
+      margin-top: 20px;
       text-align: center;
       font-weight: bold;
     }
@@ -62,116 +55,157 @@
       text-align: center;
       margin-top: 40px;
       font-weight: bold;
-      font-size: 18px;
     }
     .developer {
       color: red;
     }
   </style>
 </head>
-<body><h1>FITTER FIRST YEAR IMPORTANT MCQ FOR CBT EXAM | NIMI BASED | 2025</h1><select id="subject-select" onchange="startQuiz()">
+<body>
+
+<h1>FITTER FIRST YEAR IMPORTANT MCQ FOR CBT EXAM | NIMI BASED | 2025</h1>
+
+<select id="subject-select" onchange="startQuiz()">
   <option disabled selected>📚 विषय चुनें / Select Subject</option>
   <option value="employability">Employability Skills</option>
   <option value="drawing">Engineering Drawing</option>
   <option value="theory">Fitter Theory</option>
   <option value="workshop">Workshop Calculation & Science</option>
-</select><div id="quiz-box" style="display:none;">
+</select>
+
+<div id="quiz-box" style="display:none;">
   <div id="question" class="question"></div>
   <div id="options"></div>
   <button onclick="nextQuestion()">➡️ अगला प्रश्न / Next</button>
   <div id="result"></div>
-</div><footer>
-  <div style="font-size:22px">GITI BANSI</div>
+</div>
+
+<footer>
+  <div>GITI BANSI</div>
   <div class="developer">DEVELOPER BY "RoHiiT_Dw'N"</div>
   <div><b>Instructor By [_ Shiv_Sir ]</b></div>
-</footer><audio id="correct-sound" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
+</footer>
+
+<audio id="correct-sound" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
 
 <script>
 const questions = {
   employability: [
     {
-      q: "What is communication? / संचार क्या है?",
-      o: ["Exchange of ideas / विचारों का आदान-प्रदान", "Production / उत्पादन", "Comparison / तुलना", "Criticism / आलोचना"],
+      q: "What is communication?",
+      o: ["Exchange of ideas", "Production", "Comparison", "Criticism"],
       a: 0
     },
     {
-      q: "Which is not a part of communication? / संचार का हिस्सा कौन नहीं है?",
-      o: ["Sender / प्रेषक", "Receiver / प्राप्तकर्ता", "Machine / मशीन", "Message / संदेश"],
+      q: "Which is not a part of communication?",
+      o: ["Sender", "Receiver", "Machine", "Message"],
       a: 2
     },
     {
-      q: "Listening is a ___ skill. / सुनना एक ___ कौशल है।",
-      o: ["Soft / सॉफ्ट", "Hard / कठिन", "Technical / तकनीकी", "Verbal / मौखिक"],
+      q: "Listening is a ___ skill.",
+      o: ["Soft", "Hard", "Technical", "Verbal"],
       a: 0
     },
     {
-      q: "Which is a verbal communication? / मौखिक संचार कौन सा है?",
-      o: ["Phone call / फोन कॉल", "Gesture / इशारा", "Posture / मुद्रा", "Expression / भाव"],
+      q: "Which is a verbal communication?",
+      o: ["Phone call", "Gesture", "Posture", "Expression"],
       a: 0
     },
     {
-      q: "Communication starts with ___ / संचार की शुरुआत ___ से होती है।",
-      o: ["Sender / प्रेषक", "Receiver / प्राप्तकर्ता", "Noise / शोर", "Feedback / प्रतिक्रिया"],
+      q: "Communication starts with ___",
+      o: ["Sender", "Receiver", "Noise", "Feedback"],
+      a: 0
+    }
+  ],
+  drawing: [
+    {
+      q: "How many centers does a circle have?",
+      o: ["1", "2", "0", "4"],
+      a: 0
+    },
+    {
+      q: "Which instrument is used to draw circles?",
+      o: ["Compass", "Scale", "Set square", "Divider"],
+      a: 0
+    },
+    {
+      q: "Full form of BIS?",
+      o: ["Bureau of Indian Standards", "Basic Industrial Setup", "Binary Input System", "Bilateral Industry Standard"],
+      a: 0
+    },
+    {
+      q: "Thick lines in engineering drawing are used for?",
+      o: ["Visible outlines", "Center lines", "Hidden lines", "Section lines"],
+      a: 0
+    },
+    {
+      q: "Sectional view helps in?",
+      o: ["Seeing internal parts", "External design", "Packaging", "Layouting"],
+      a: 0
+    }
+  ],
+  theory: [
+    {
+      q: "Which tool is used for cutting metal?",
+      o: ["Hacksaw", "Pliers", "Screwdriver", "Hammer"],
+      a: 0
+    },
+    {
+      q: "A file removes material by?",
+      o: ["Shearing", "Rubbing", "Cutting", "Scraping"],
+      a: 1
+    },
+    {
+      q: "Which is not a type of file?",
+      o: ["Flat", "Round", "Triangular", "Square"],
+      a: 3
+    },
+    {
+      q: "Which tool holds workpiece?",
+      o: ["Vice", "Hammer", "Scriber", "Punch"],
+      a: 0
+    },
+    {
+      q: "Cold chisels are made of?",
+      o: ["Carbon steel", "Cast iron", "Copper", "Aluminium"],
+      a: 0
+    }
+  ],
+  workshop: [
+    {
+      q: "1 inch is equal to how many mm?",
+      o: ["25.4", "2.54", "10", "100"],
+      a: 0
+    },
+    {
+      q: "Which unit is used for length?",
+      o: ["Meter", "Kg", "Litre", "Watt"],
+      a: 0
+    },
+    {
+      q: "Force = ?",
+      o: ["Mass x Acceleration", "Work x Time", "Velocity x Time", "Power x Area"],
+      a: 0
+    },
+    {
+      q: "What is the unit of work?",
+      o: ["Joule", "Watt", "Newton", "Meter"],
+      a: 0
+    },
+    {
+      q: "1000 grams = ?",
+      o: ["1 Kg", "0.1 Kg", "10 Kg", "100 Kg"],
       a: 0
     }
   ]
 };
+
 let currentSet = [];
 let currentIndex = 0;
 let score = 0;
+
 function startQuiz() {
   const subject = document.getElementById('subject-select').value;
   currentSet = questions[subject];
   currentIndex = 0;
   score = 0;
-  document.getElementById('quiz-box').style.display = 'block';
-  showQuestion();
-}
-function showQuestion() {
-  const q = currentSet[currentIndex];
-  document.getElementById('question').innerText = `${currentIndex + 1}. ${q.q}`;
-  const optionsBox = document.getElementById('options');
-  optionsBox.innerHTML = '';
-  q.o.forEach((opt, i) => {
-    const btn = document.createElement('div');
-    btn.className = 'option';
-    btn.innerText = `(${String.fromCharCode(65 + i)}) ${opt}`;
-    btn.onclick = () => handleAnswer(btn, i === q.a);
-    optionsBox.appendChild(btn);
-  });
-}
-function handleAnswer(elem, correct) {
-  const options = document.querySelectorAll('.option');
-  options.forEach(btn => btn.onclick = null);
-  if (correct) {
-    elem.classList.add('correct');
-    score++;
-    document.getElementById('correct-sound').play();
-  } else {
-    elem.classList.add('wrong');
-    options[currentSet[currentIndex].a].classList.add('correct');
-    if (navigator.vibrate) navigator.vibrate(200);
-  }
-}
-function nextQuestion() {
-  if (currentIndex < currentSet.length - 1) {
-    currentIndex++;
-    showQuestion();
-  } else {
-    showResult();
-  }
-}
-function showResult() {
-  const percent = Math.round((score / currentSet.length) * 100);
-  let remark = "";
-  if (percent <= 20) remark = "बहुत बेकार";
-  else if (percent <= 30) remark = "बेकार";
-  else if (percent <= 50) remark = "थोड़ा सही है";
-  else if (percent <= 70) remark = "अच्छा";
-  else if (percent <= 90) remark = "बहुत अच्छा 🤠";
-  else if (percent < 100) remark = "EXCELLENT 👌";
-  else remark = "शाबाश अब तो पूरा रिकॉर्ड टूट जाएगा 💪✅";
-  document.getElementById('result').innerText = `आपका स्कोर: ${percent}% - ${remark}`;
-}
-</script></body>
-</html>
